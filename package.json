@@ -1,0 +1,25 @@
+{
+  "name": "express-http-concat",
+  "description": "A express middleware for concatenating files in a given context: CSS and JS files usually",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/weizs/express-http-concat.git"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "http",
+    "concat"
+  ],
+  "files": [
+    "index.js",
+    "README.md"
+  ],
+  "author": "William Wei　<me@poorren.com> (http://poorren.com)",
+  "license": "MIT"
+}
