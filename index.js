@@ -15,7 +15,7 @@ var httpConcat = function (options) {
 
     var opts = {
         //file base path
-        base: options.base || '/public',
+        base: options.base || path.join(__dirname, '../..'),
         //url path
         path: options.path || '/',
         //separator for url path & file path
@@ -32,12 +32,13 @@ var httpConcat = function (options) {
             if (patten.length < 2) {
                 next();
             } else {
-                var pathArrayStr = patten[1].split('?')[0],
-                    pathArray = validPath(opts.base, pathArrayStr ? pathArrayStr.split(opts.fileSeparator) : []);
+                var pathArray = validPath(path.join(opts.base, patten[0]), patten[1].split('?')[0].split(opts.fileSeparator));
                 if (pathArray.length) {
                     res.setHeader('Content-Type', parseMIME(pathArray[0]));
-                    if (opts.setHeaders) opts.setHeaders(res);
-                    outputFiles(pathArray, res);
+                    if (opts.setHeaders) {
+                        opts.setHeaders(res);
+                    }
+                    pipe(pathArray, res);
                 } else {
                     res.status(404);
                     next();
@@ -56,25 +57,25 @@ function parseMIME(filename) {
 }
 
 function validPath(base, pathArray) {
-    var validPathArray = [], tmpPath;
+    var validPathArray = [], validPathMap = {}, validPath;
     for (var i = 0; i < pathArray.length; i++) {
-        tmpPath = base + '/' + pathArray[i];
-        if (fs.existsSync(tmpPath))
-            validPathArray.push(tmpPath);
+        validPath = path.join(base, pathArray[i]);
+        if (!validPathMap[validPath] && fs.existsSync(validPath)) {
+            validPathMap[validPath] = 1;
+            validPathArray.push(validPath);
+        }
     }
     return validPathArray;
 }
 
-function outputFiles(pathArray, writer) {
-    (function next(i, len) {
-        if (i < len) {
-            var reader = fs.createReadStream(pathArray[i], {encoding: 'utf-8'});
-            reader.pipe(writer, {end: false});
-            reader.on('end', function () {
-                next(i + 1, len);
-            });
-        } else {
-            writer.end();
-        }
-    }(0, pathArray.length));
+function pipe(pathArray, writer) {
+    if (pathArray.length) {
+        var reader = fs.createReadStream(pathArray.shift(), {encoding: 'utf-8'});
+        reader.pipe(writer, {end: false});
+        reader.on('end', function () {
+            pipe(pathArray, writer);
+        });
+    } else {
+        writer.end();
+    }
 }
