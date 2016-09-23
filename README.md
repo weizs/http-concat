@@ -2,7 +2,7 @@
 A express middleware for concatenating files in a given context: CSS and JS files usually
 
 ##Installation
-    npm install express-http-concat --save
+    npm install http-concat --save
     
     var express = require('express');
     var httpConcat = require('http-concat');
