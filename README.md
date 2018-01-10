@@ -1,7 +1,9 @@
 # http concat
+
 A express middleware for concatenating files in a given context: CSS and JS files usually
 
-##Installation
+## Installation
+
     npm install http-concat --save
     
     var express = require('express');
@@ -14,9 +16,13 @@ A express middleware for concatenating files in a given context: CSS and JS file
         path: '/'
     }));
     
-##Use
+## Use
     http://example.com/??script1.js,script2.js,build/script.js
+    
     http://example.com/??script1.js,script2.js,build/script.js?v=2016
+    
     http://example.com/??style1.css,style2.css,build/style.css
+    
     http://example.com/??style1.css,style2.css,build/style.css?v=2016
+   
 
