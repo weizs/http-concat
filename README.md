@@ -2,6 +2,8 @@
 
 A express middleware for concatenating files in a given context: CSS and JS files usually
 
+[![NPM version](https://badge.fury.io/js/http-concat.svg)](http://badge.fury.io/js/http-concat)
+
 ## Installation
 
 ```
